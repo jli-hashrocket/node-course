@@ -1,6 +1,6 @@
 console.log('starting password manager');
 
-var storage = require('node-persist'); 
+var storage = require('node-persist');
 storage.initSync();
 
 function createAccount (account) {
@@ -8,17 +8,18 @@ function createAccount (account) {
 	if(typeof accounts === 'undefined'){
 		accounts = [];
 	}
-	console.log(accounts);
-	// accounts.push(account);
-	// storage.setItemSync('accounts', account)
+
+	accounts.push(account);
+	storage.setItemSync('accounts', account);
 	return account;
 }
 
 function getAccount (accountUsername) {
 	var accounts = storage.getItemSync('accounts');
-	var foundAccount = undefined;
+	var foundAccount = null;
+
 	for(var i=0; i < accounts.length; i++){
-		if(accounts[i] === accountUsername){
+		if(accounts[i].username === accountUsername){
 			foundAccount = account;
 		}
 	}
@@ -27,13 +28,9 @@ function getAccount (accountUsername) {
 
 function restartAccounts() {
 	var accounts = storage.getItemSync('accounts');
-	storage.setItemSync('accounts', undefined)
+	storage.setItemSync('accounts', undefined);
 }
 
-// createAccount({name: 'Bruce Wayne', username: 'Batman', password: 'JokersAnAsshole'});
-createAccount({name: 'Tim Drake', username: 'Robin', password: 'Ilovebatman'});
+createAccount({name: 'Bruce Wayne', username: 'Batman', password: 'JokersAnAsshole'});
 getAccount('Batman');
-getAccount('Robin');
-var accounts = storage.getItemSync('accounts');
-console.log(accounts);
 // restartAccounts();
