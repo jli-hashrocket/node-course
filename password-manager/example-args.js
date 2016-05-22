@@ -4,7 +4,8 @@ var argv = require('yargs')
         name: {
           demand: true,
           alias: 'n',
-          description: 'Your first name goes here'
+          description: 'Your first name goes here',
+          type: 'string'
         },
         lastname: {
           demand: true,
@@ -12,6 +13,9 @@ var argv = require('yargs')
           description: 'Your last name goes here'
         }
       }).help('help');
+    })
+    .command('get', 'some description', function(yargs){
+
     })
     .help('help')
     .argv;
@@ -26,3 +30,4 @@ if (command === 'hello' && argv.name !== undefined && argv.lastname !== undefine
 }else if (command === 'hello'){
   console.log('Hello world!');
 }
+
