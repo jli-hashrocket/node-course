@@ -52,7 +52,7 @@ var command = argv._[0];
 
 function getAccounts (masterPassword){
   var encryptedAccount = storage.getItemSync('accounts');
-  var accounts = []
+  var accounts = [];
 
   if (encryptedAccount !== undefined) {
     var bytes = crypto.AES.decrypt(encryptedAccount, masterPassword);
@@ -63,13 +63,13 @@ function getAccounts (masterPassword){
 
 function saveAccounts (accounts, masterPassword){
   var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
-  storage.setItemSync('accounts', encryptedAccounts.toString);
+  storage.setItemSync('accounts', encryptedAccounts.toString());
   return accounts;
 }
 function createAccount (account, masterPassword) {
   var accounts = getAccounts(masterPassword);
 	accounts.push(account);
-	saveAccounts(accounts, masterPassword)
+	saveAccounts(accounts, masterPassword);
 	return account;
 }
 
@@ -91,18 +91,28 @@ function restartAccounts() {
 }
 
 if (command === 'create' && argv.name !== undefined && argv.username !== undefined && argv.password !== undefined) {
-	var createdAccount = createAccount({
-		name: argv.name,
-		username: argv.username,
-		password: argv.password,
-    masterPassword: argv.masterPassword
-	}, argv.masterPassword);
-  console.log( 'Account for ' + argv.name + ' has been created.');
-  console.log(createdAccount);
+	try {
+    var createdAccount = createAccount({
+      name: argv.name,
+      username: argv.username,
+      password: argv.password,
+      masterPassword: argv.masterPassword
+    }, argv.masterPassword);
+    console.log( 'Account for ' + argv.name + ' has been created.');
+    console.log(createdAccount);
+  } catch (e){
+    console.log('Unable to create account:' + e.message);
+  }
+
+} else if (command === 'get' && argv.name !== undefined){
+  try {
+    var fetchedAccount = getAccount(argv.name, argv.masterPassword);
+    if (fetchedAccount !== undefined) {
+      console.log( 'Welcome, ' + argv.name + '!');
+      console.log(fetchedAccount);
+    }
+  } catch (e){
+    console.log('Unable to fetch account');
+  }
 }
 
-if (command === 'get' && argv.name !== undefined) {
-	var fetchedAccount = getAccount(argv.name, argv.masterPassword);
-	console.log( 'Welcome, ' + argv.name + '!');
-	console.log(fetchedAccount);
-}
