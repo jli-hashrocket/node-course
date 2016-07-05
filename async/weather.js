@@ -3,7 +3,6 @@ var encodedLocation = "Washington,dc";
 var url = 'http://api.openweathermap.org/data/2.5/weather?appid=2cc14f1ea516b96a82fbede67ca1f029&q=' + encodedLocation + '&units=imperial';
 
 module.exports = function (callback) {
-  callback('Here is the current weather!');
   request({
     url: url,
     json: true
