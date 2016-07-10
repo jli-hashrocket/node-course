@@ -1,8 +1,14 @@
 var request = require('request');
-var encodedLocation = "Washington,dc";
-var url = 'http://api.openweathermap.org/data/2.5/weather?appid=2cc14f1ea516b96a82fbede67ca1f029&q=' + encodedLocation + '&units=imperial';
 
-module.exports = function (callback) {
+module.exports = function (location, callback) {
+  //move url into here
+  var encodedLocation = encodeURIComponent(location);
+  if (!location) {
+    return callback('No location provided');
+  }
+
+  var url = 'http://api.openweathermap.org/data/2.5/weather?appid=2cc14f1ea516b96a82fbede67ca1f029&q=' + encodedLocation + '&units=imperial';
+
   request({
     url: url,
     json: true
